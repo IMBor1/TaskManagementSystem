@@ -1,28 +1,22 @@
 package com.example.TaskManagementSystem.controller;
 
 import com.example.TaskManagementSystem.model.dto.TaskDto;
-import com.example.TaskManagementSystem.repository.TaskRepository;
 import com.example.TaskManagementSystem.service.TaskService;
-import com.example.TaskManagementSystem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/tasks")
+@RequestMapping("/tasks")
 public class TaskController {
     private final TaskService taskService;
 
-    public TaskController(TaskService taskService) {
-        this.taskService = taskService;
-    }
 
-    @GetMapping("/allTasks")
+    @GetMapping("/all")
     public ResponseEntity<List<TaskDto>> getAllTasks(@RequestParam String author,
                                                      @RequestParam String executor,
                                                      @RequestParam int page,

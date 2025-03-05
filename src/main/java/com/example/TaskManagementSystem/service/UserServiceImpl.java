@@ -10,13 +10,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
-    private  PasswordEncoder passwordEncoder;
+//    private  PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -28,7 +27,7 @@ public class UserServiceImpl implements UserService {
         log.info("Registering user");
             User user = new User();
             user.setEmail(registerRequestDto.getEmail());
-            user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
+ //           user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
             user.setRole(Role.USER);
             return userRepository.save(user);
     }
