@@ -5,31 +5,25 @@ import com.example.TaskManagementSystem.model.dto.RegisterRequestDto;
 import com.example.TaskManagementSystem.model.entity.User;
 import com.example.TaskManagementSystem.model.enums.Role;
 import com.example.TaskManagementSystem.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
 //    private  PasswordEncoder passwordEncoder;
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
 
     @Override
     public User registerUser(RegisterRequestDto registerRequestDto) {
         log.info("Registering user");
-            User user = new User();
-            user.setEmail(registerRequestDto.getEmail());
- //           user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
-            user.setRole(Role.USER);
-            return userRepository.save(user);
+        User user = new User();
+        user.setEmail(registerRequestDto.getEmail());
+        //           user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
+        user.setRole(Role.USER);
+        return userRepository.save(user);
     }
 
     @Override
@@ -40,11 +34,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User setRole(User user, Role newRole) {
+    public User setRole(Long userId, Role newRole) {
         log.info("Updating user role");
-        User user1 = userRepository.findByEmail(user.getEmail()).orElseThrow(() ->
-                new NotFoundException("User with email " + user.getEmail() + " not found"));
+        User user1 = userRepository.findById(userId).orElseThrow(() ->
+                new NotFoundException("User with email " + userId + " not found"));
         user1.setRole(newRole);
         return userRepository.save(user1);
+    }
+    public User getUserById(long id) {
+        log.info("Getting user by id");
+        return userRepository.findById(id).orElseThrow(() ->
+                new NotFoundException("User with id " + id + " not found"));
     }
 }

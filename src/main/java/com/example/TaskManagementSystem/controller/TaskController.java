@@ -16,11 +16,11 @@ public class TaskController {
     private final TaskService taskService;
 
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<TaskDto>> getAllTasks(@RequestParam String author,
                                                      @RequestParam String executor,
-                                                     @RequestParam int page,
-                                                     @RequestParam int size) {
+                                                     @RequestParam (defaultValue = "0") int page,
+                                                     @RequestParam (defaultValue = "10") int size) {
         Page<TaskDto> tasks = taskService.getAllTasks(author, executor, page, size);
         return ResponseEntity.ok(tasks.getContent());
     }
