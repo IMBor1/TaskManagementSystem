@@ -2,8 +2,9 @@ package com.example.TaskManagementSystem.mapper;
 
 import com.example.TaskManagementSystem.model.dto.TaskDto;
 import com.example.TaskManagementSystem.model.entity.Task;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-
+@NoArgsConstructor
 @Component
 public class TaskMapper {
 
@@ -14,8 +15,8 @@ public class TaskMapper {
         dto.setDescription(task.getDescription());
         dto.setStatus(task.getStatus());
         dto.setPriority(task.getPriority());
-        dto.setAuthorId(task.getAuthor() != null ? task.getAuthor().getId() : null);
-        dto.setExecutorId(task.getExecutor().getId() != null ? task.getExecutor().getId() : null);
+      //  dto.setAuthorId(task.getAuthor() != null ? task.getAuthor().getId() : null);
+      //  dto.setExecutorId(task.getExecutor().getId() != null ? task.getExecutor().getId() : null);
         return dto;
     }
 

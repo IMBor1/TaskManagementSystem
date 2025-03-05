@@ -4,16 +4,14 @@ import com.example.TaskManagementSystem.model.enums.Priority;
 import com.example.TaskManagementSystem.model.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
-import org.aspectj.bridge.IMessage;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
-
+@Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+
 @Table(name = "tasks")
 public class Task {
     @Id

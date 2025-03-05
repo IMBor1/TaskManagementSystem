@@ -3,17 +3,13 @@ package com.example.TaskManagementSystem.model.entity;
 
 import com.example.TaskManagementSystem.model.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.lang.NonNull;
-
+@Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+
 @Table(name = "users")
 public class User {
     @Id
@@ -25,4 +21,5 @@ public class User {
     private String password;
     @JoinColumn(name = "role_name")
     private Role role;
+
 }
