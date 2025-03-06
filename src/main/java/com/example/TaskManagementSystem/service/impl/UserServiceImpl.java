@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         user1.setRole(newRole);
         return userRepository.save(user1);
     }
-    public User getUserById(long id) {
+    public User getUserById(Long id) {
         log.info("Getting user by id");
         return userRepository.findById(id).orElseThrow(() ->
                 new NotFoundException("User with id " + id + " not found"));

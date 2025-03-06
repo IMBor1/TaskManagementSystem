@@ -33,7 +33,8 @@ public class TaskController {
     }
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or @taskSecurityService.isExecutor(#id)")
-    public ResponseEntity<TaskDto> updateTask(@PathVariable String id, @RequestBody TaskDto taskDto) {
+    public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @RequestBody TaskDto taskDto) {
+        taskDto.setId(id);
         TaskDto updateTask = taskService.updateTask(taskDto);
         return ResponseEntity.ok(updateTask);
     }

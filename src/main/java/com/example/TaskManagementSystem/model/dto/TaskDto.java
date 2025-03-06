@@ -3,9 +3,7 @@ package com.example.TaskManagementSystem.model.dto;
 import com.example.TaskManagementSystem.model.enums.Priority;
 import com.example.TaskManagementSystem.model.enums.Status;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.lang.NonNull;
 
 @Data
@@ -23,8 +21,9 @@ public class TaskDto {
 
     @NonNull
     private Priority priority;
-
+    @NonNull
     private Long authorId;
+    @NonNull
     private Long executorId;
 }
 

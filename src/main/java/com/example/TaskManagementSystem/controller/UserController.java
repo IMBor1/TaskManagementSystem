@@ -19,8 +19,14 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
+    @GetMapping("/{email}")
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
+        User user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(userMapper.toDto(user));
+    }
+
     @PutMapping("{id}")
     public ResponseEntity<UserDto> updateUserRole(
             @PathVariable Long id,

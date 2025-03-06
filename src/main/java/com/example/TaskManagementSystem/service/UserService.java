@@ -10,5 +10,5 @@ public interface UserService {
     User getUserByEmail(String email);
 
     User setRole(Long userId, Role newRole);
-    public User getUserById(long id);
+    public User getUserById(Long id);
 }
