@@ -4,6 +4,7 @@ import com.example.TaskManagementSystem.exception.NotFoundException;
 import com.example.TaskManagementSystem.mapper.TaskMapper;
 import com.example.TaskManagementSystem.model.dto.TaskDto;
 import com.example.TaskManagementSystem.model.entity.Task;
+import com.example.TaskManagementSystem.model.entity.User;
 import com.example.TaskManagementSystem.repository.TaskRepository;
 import com.example.TaskManagementSystem.repository.UserRepository;
 import com.example.TaskManagementSystem.service.TaskService;
@@ -32,13 +33,24 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDto createTask(TaskDto taskDto) {
-        log.info("createTask");
+        log.info("Creating task: {}", taskDto);
+        
+        // Проверяем существование автора
+        User author = userRepository.findById(taskDto.getAuthorId())
+            .orElseThrow(() -> new NotFoundException("Author with ID " + taskDto.getAuthorId() + " not found"));
+            
+        // Проверяем существование исполнителя
+        User executor = userRepository.findById(taskDto.getExecutorId())
+            .orElseThrow(() -> new NotFoundException("Executor with ID " + taskDto.getExecutorId() + " not found"));
+            
         Task task = taskMapper.toEntity(taskDto);
         task.setAuthor(userRepository.findById(taskDto.getAuthorId()).orElseThrow(() ->
                 new NotFoundException("Not Found")));
         task.setExecutor(userRepository.findById(taskDto.getExecutorId()).orElseThrow(() ->
                 new NotFoundException("Not Found")));
-        return taskMapper.toDto(taskRepository.save(task));
+                task = taskRepository.save(task);
+                log.info("Task created successfully with ID: {}", task.getId());
+                return taskMapper.toDto(task);
     }
     @Override
     public TaskDto updateTask(TaskDto taskDto) {

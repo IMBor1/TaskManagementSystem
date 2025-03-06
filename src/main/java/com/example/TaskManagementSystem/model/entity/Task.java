@@ -25,10 +25,10 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Status status;
     @ManyToOne
-    @JoinColumn(name = "author.id")
+    @JoinColumn(name = "author_id")
     private User author;
     @ManyToOne
-    @JoinColumn(name = "executor.id")
+    @JoinColumn(name = "executor_id")
     private User executor;
     @OneToMany(mappedBy = "task",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;

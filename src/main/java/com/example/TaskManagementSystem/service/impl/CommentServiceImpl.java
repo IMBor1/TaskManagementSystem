@@ -17,14 +17,11 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-    public class CommentServiceImpl implements CommentService {
-        private final CommentRepository commentRepository;
-
-        private TaskRepository taskRepository;
-
-        private UserRepository userRepository;
-
-        private CommentMapper commentMapper;
+public class CommentServiceImpl implements CommentService {
+    private final CommentRepository commentRepository;
+    private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
+    private final CommentMapper commentMapper;
 
         @Override
         public CommentDto createComment(Long taskId, CommentDto commentDto) {
@@ -48,18 +45,18 @@ import java.util.List;
             return commentMapper.toDto(savedComment);
         }
 
-        @Override
-        public void deleteComment(Long commentId) {
-            commentRepository.deleteById(commentId);
-        }
+    @Override
+    public void deleteComment(Long commentId) {
+        commentRepository.deleteById(commentId);
+    }
 
-        @Override
-        public List<CommentDto> getCommentsByTaskId(Long taskId) {
-            List<Comment> comments = commentRepository.findByTaskId(taskId);
-            List<CommentDto> commentDtos = new ArrayList<>();
-            for (Comment comment : comments) {
-                commentDtos.add(commentMapper.toDto(comment));
-            }
-            return commentDtos;
+    @Override
+    public List<CommentDto> getCommentsByTaskId(Long taskId) {
+        List<Comment> comments = commentRepository.findByTaskId(taskId);
+        List<CommentDto> commentDtos = new ArrayList<>();
+        for (Comment comment : comments) {
+            commentDtos.add(commentMapper.toDto(comment));
         }
+        return commentDtos;
+    }
 }

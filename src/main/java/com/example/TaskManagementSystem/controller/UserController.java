@@ -21,20 +21,18 @@ public class UserController {
         User user = userService.getUserById(id);
         return ResponseEntity.ok(userMapper.toDto(user));
     }
+
     @GetMapping("/{email}")
     public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
         User user = userService.getUserByEmail(email);
         return ResponseEntity.ok(userMapper.toDto(user));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}/role")
     public ResponseEntity<UserDto> updateUserRole(
             @PathVariable Long id,
             @RequestParam Role role) {
         User updatedUser = userService.setRole(id, role);
-        UserDto userDto = userMapper.toDto(updatedUser);
-        return ResponseEntity.ok(userDto);
-
-
+        return ResponseEntity.ok(userMapper.toDto(updatedUser));
     }
 }
