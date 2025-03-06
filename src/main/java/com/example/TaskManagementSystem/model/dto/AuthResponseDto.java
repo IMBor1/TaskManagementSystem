@@ -1,11 +1,9 @@
 package com.example.TaskManagementSystem.model.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class AuthResponseDto {
     private String token;

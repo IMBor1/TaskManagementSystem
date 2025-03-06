@@ -1,12 +1,10 @@
 package com.example.TaskManagementSystem.model.dto;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.lang.NonNull;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class AuthRequestDto {
     @NonNull

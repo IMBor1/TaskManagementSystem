@@ -5,6 +5,7 @@ import com.example.TaskManagementSystem.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,16 +26,19 @@ public class TaskController {
         return ResponseEntity.ok(tasks.getContent());
     }
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
         TaskDto createdTask = taskService.createTask(taskDto);
         return ResponseEntity.ok(createdTask);
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @taskSecurityService.isExecutor(#id)")
     public ResponseEntity<TaskDto> updateTask(@PathVariable String id, @RequestBody TaskDto taskDto) {
         TaskDto updateTask = taskService.updateTask(taskDto);
         return ResponseEntity.ok(updateTask);
     }
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TaskDto> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();

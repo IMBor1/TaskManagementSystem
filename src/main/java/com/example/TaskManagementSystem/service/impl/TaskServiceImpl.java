@@ -1,4 +1,4 @@
-package com.example.TaskManagementSystem.service;
+package com.example.TaskManagementSystem.service.impl;
 
 import com.example.TaskManagementSystem.exception.NotFoundException;
 import com.example.TaskManagementSystem.mapper.TaskMapper;
@@ -6,6 +6,7 @@ import com.example.TaskManagementSystem.model.dto.TaskDto;
 import com.example.TaskManagementSystem.model.entity.Task;
 import com.example.TaskManagementSystem.repository.TaskRepository;
 import com.example.TaskManagementSystem.repository.UserRepository;
+import com.example.TaskManagementSystem.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

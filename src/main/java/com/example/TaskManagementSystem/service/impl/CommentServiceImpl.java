@@ -1,4 +1,4 @@
-package com.example.TaskManagementSystem.service;
+package com.example.TaskManagementSystem.service.impl;
 
 import com.example.TaskManagementSystem.exception.NotFoundException;
 import com.example.TaskManagementSystem.mapper.CommentMapper;
@@ -8,6 +8,7 @@ import com.example.TaskManagementSystem.model.entity.Task;
 import com.example.TaskManagementSystem.repository.CommentRepository;
 import com.example.TaskManagementSystem.repository.TaskRepository;
 import com.example.TaskManagementSystem.repository.UserRepository;
+import com.example.TaskManagementSystem.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

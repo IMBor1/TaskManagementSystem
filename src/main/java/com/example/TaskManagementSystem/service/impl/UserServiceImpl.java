@@ -1,12 +1,15 @@
-package com.example.TaskManagementSystem.service;
+package com.example.TaskManagementSystem.service.impl;
 
 import com.example.TaskManagementSystem.exception.NotFoundException;
 import com.example.TaskManagementSystem.model.dto.RegisterRequestDto;
 import com.example.TaskManagementSystem.model.entity.User;
 import com.example.TaskManagementSystem.model.enums.Role;
 import com.example.TaskManagementSystem.repository.UserRepository;
+import com.example.TaskManagementSystem.service.UserService;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -14,14 +17,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-//    private  PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public User registerUser(RegisterRequestDto registerRequestDto) {
         log.info("Registering user");
         User user = new User();
         user.setEmail(registerRequestDto.getEmail());
-        //           user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
+                   user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
         user.setRole(Role.USER);
         return userRepository.save(user);
     }
