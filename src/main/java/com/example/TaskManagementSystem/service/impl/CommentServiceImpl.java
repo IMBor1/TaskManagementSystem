@@ -17,49 +17,46 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-    public class CommentServiceImpl implements CommentService {
-        private final CommentRepository commentRepository;
+public class CommentServiceImpl implements CommentService {
+    private final CommentRepository commentRepository;
+    private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
+    private final CommentMapper commentMapper;
 
-        private TaskRepository taskRepository;
+    @Override
+    public CommentDto createComment(Long taskId, CommentDto commentDto) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new NotFoundException("Task not found"));
+        Comment comment = commentMapper.toEntity(commentDto);
+        comment.setTask(task);
+        comment.setAuthor(userRepository.findById(commentDto.getAuthorId())
+                .orElseThrow(() -> new NotFoundException("User not found")));
+        Comment savedComment = commentRepository.save(comment);
+        return commentMapper.toDto(savedComment);
+    }
 
-        private UserRepository userRepository;
+    @Override
+    public CommentDto updateComment(Long commentId, CommentDto commentDto) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException("Task not found"));
+        Comment updatedComment = commentMapper.toEntity(commentDto);
+        comment.setText(updatedComment.getText());
+        Comment savedComment = commentRepository.save(comment);
+        return commentMapper.toDto(savedComment);
+    }
 
-        private CommentMapper commentMapper;
+    @Override
+    public void deleteComment(Long commentId) {
+        commentRepository.deleteById(commentId);
+    }
 
-        @Override
-        public CommentDto createComment(Long taskId, CommentDto commentDto) {
-            Task task = taskRepository.findById(taskId)
-                    .orElseThrow(() -> new NotFoundException("Task not found"));
-            Comment comment = commentMapper.toEntity(commentDto);
-            comment.setTask(task);
-            comment.setAuthor(userRepository.findById(commentDto.getAuthorId())
-                    .orElseThrow(() -> new NotFoundException("Task not found")));
-            Comment savedComment = commentRepository.save(comment);
-            return commentMapper.toDto(savedComment);
+    @Override
+    public List<CommentDto> getCommentsByTaskId(Long taskId) {
+        List<Comment> comments = commentRepository.findByTaskId(taskId);
+        List<CommentDto> commentDtos = new ArrayList<>();
+        for (Comment comment : comments) {
+            commentDtos.add(commentMapper.toDto(comment));
         }
-
-        @Override
-        public CommentDto updateComment(Long commentId, CommentDto commentDto) {
-            Comment comment = commentRepository.findById(commentId)
-                    .orElseThrow(() -> new NotFoundException("Task not found"));
-            Comment updatedComment = commentMapper.toEntity(commentDto);
-            comment.setText(updatedComment.getText());
-            Comment savedComment = commentRepository.save(comment);
-            return commentMapper.toDto(savedComment);
-        }
-
-        @Override
-        public void deleteComment(Long commentId) {
-            commentRepository.deleteById(commentId);
-        }
-
-        @Override
-        public List<CommentDto> getCommentsByTaskId(Long taskId) {
-            List<Comment> comments = commentRepository.findByTaskId(taskId);
-            List<CommentDto> commentDtos = new ArrayList<>();
-            for (Comment comment : comments) {
-                commentDtos.add(commentMapper.toDto(comment));
-            }
-            return commentDtos;
-        }
+        return commentDtos;
+    }
 }
