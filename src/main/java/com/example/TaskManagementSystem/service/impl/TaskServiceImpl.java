@@ -35,11 +35,9 @@ public class TaskServiceImpl implements TaskService {
     public TaskDto createTask(TaskDto taskDto) {
         log.info("Creating task: {}", taskDto);
         
-        // Проверяем существование автора
         User author = userRepository.findById(taskDto.getAuthorId())
             .orElseThrow(() -> new NotFoundException("Author with ID " + taskDto.getAuthorId() + " not found"));
             
-        // Проверяем существование исполнителя
         User executor = userRepository.findById(taskDto.getExecutorId())
             .orElseThrow(() -> new NotFoundException("Executor with ID " + taskDto.getExecutorId() + " not found"));
             

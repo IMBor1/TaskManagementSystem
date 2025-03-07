@@ -1,9 +1,7 @@
 package com.example.TaskManagementSystem.controller;
 
 import com.example.TaskManagementSystem.model.dto.CommentDto;
-import com.example.TaskManagementSystem.model.entity.Comment;
 import com.example.TaskManagementSystem.service.CommentService;
-import com.example.TaskManagementSystem.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

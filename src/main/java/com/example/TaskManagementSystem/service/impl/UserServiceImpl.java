@@ -6,7 +6,6 @@ import com.example.TaskManagementSystem.model.entity.User;
 import com.example.TaskManagementSystem.model.enums.Role;
 import com.example.TaskManagementSystem.repository.UserRepository;
 import com.example.TaskManagementSystem.service.UserService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +23,7 @@ public class UserServiceImpl implements UserService {
         log.info("Registering user");
         User user = new User();
         user.setEmail(registerRequestDto.getEmail());
-                   user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
         user.setRole(Role.USER);
         return userRepository.save(user);
     }
@@ -44,6 +43,7 @@ public class UserServiceImpl implements UserService {
         user1.setRole(newRole);
         return userRepository.save(user1);
     }
+
     public User getUserById(Long id) {
         log.info("Getting user by id");
         return userRepository.findById(id).orElseThrow(() ->
