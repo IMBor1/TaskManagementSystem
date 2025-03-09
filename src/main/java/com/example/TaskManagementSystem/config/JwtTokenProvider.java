@@ -13,8 +13,9 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-    private final SecretKey JWT_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    private final long JWT_EXPIRATION = 604800000L;
+    private static final String JWT_SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
+    private final SecretKey JWT_SECRET_KEY = Keys.hmacShaKeyFor(JWT_SECRET.getBytes());
+    private final long JWT_EXPIRATION = 604800000L; // 7 days
 
     public String generateToken(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
