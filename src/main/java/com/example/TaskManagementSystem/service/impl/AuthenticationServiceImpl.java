@@ -7,6 +7,7 @@ import com.example.TaskManagementSystem.model.entity.User;
 import com.example.TaskManagementSystem.repository.UserRepository;
 import com.example.TaskManagementSystem.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -31,12 +33,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new UsernameNotFoundException("Invalid password");
         }
 
+        log.debug("User found: {} with role: {}", user.getEmail(), user.getRole());
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                user, null, List.of(new SimpleGrantedAuthority(user.getRole().name()))
+                user,
+                null,
+                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
         );
+
         String token = jwtTokenProvider.generateToken(authentication);
+        log.debug("Generated token for user: {}", user.getEmail());
 
         return new AuthResponseDto(token);
-
     }
 }

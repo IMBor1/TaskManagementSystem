@@ -26,39 +26,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,@NonNull FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, 
+                                  @NonNull HttpServletResponse response,
+                                  @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
             String token = getJwtFromRequest(request);
             log.debug("Processing request to {}", request.getRequestURI());
 
-            if (token != null) {
-                log.debug("JWT token found in request");
-                if (jwtTokenProvider.validateToken(token)) {
-                    String email = jwtTokenProvider.getUserEmailFromJWT(token);
-                    log.debug("Token is valid for user: {}", email);
-                    
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-                    log.debug("User loaded with roles: {}", userDetails.getAuthorities());
+            if (token != null && jwtTokenProvider.validateToken(token)) {
+                String email = jwtTokenProvider.getUserEmailFromJWT(token);
+                log.debug("Token is valid for user: {}", email);
+                
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                
+                UsernamePasswordAuthenticationToken authentication = 
+                    new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                    );
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                    UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                        );
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                    log.debug("Authentication set in SecurityContext for user: {}", email);
-                } else {
-                    log.warn("Invalid JWT token");
-                }
-            } else {
-                log.debug("No JWT token found in request");
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                log.debug("Authentication set in SecurityContext for user: {} with authorities: {}", 
+                    email, userDetails.getAuthorities());
             }
         } catch (Exception e) {
-            log.error("Authentication failed: {}", e.getMessage());
+            log.error("Cannot set user authentication: {}", e.getMessage());
+            SecurityContextHolder.clearContext();
         }
 
         filterChain.doFilter(request, response);
@@ -67,9 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            String token = bearerToken.substring(7);
-            log.debug("Bearer token extracted from request");
-            return token;
+            return bearerToken.substring(7);
         }
         return null;
     }
