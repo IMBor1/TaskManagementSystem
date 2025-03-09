@@ -11,12 +11,22 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.Date;
 
+/**
+ * Провайдер для работы с JWT токенами.
+ * Отвечает за генерацию, валидацию и извлечение информации из JWT токенов.
+ */
 @Component
 public class JwtTokenProvider {
     private static final String JWT_SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
     private final SecretKey JWT_SECRET_KEY = Keys.hmacShaKeyFor(JWT_SECRET.getBytes());
     private final long JWT_EXPIRATION = 604800000L; // 7 days
 
+    /**
+     * Генерирует JWT токен на основе данных аутентификации.
+     *
+     * @param authentication объект аутентификации, содержащий данные пользователя
+     * @return строка JWT токена
+     */
     public String generateToken(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Date now = new Date();
@@ -30,6 +40,12 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    /**
+     * Проверяет валидность JWT токена.
+     *
+     * @param token JWT токен для проверки
+     * @return true если токен валиден, false в противном случае
+     */
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -42,6 +58,12 @@ public class JwtTokenProvider {
         }
     }
 
+    /**
+     * Извлекает email пользователя из JWT токена.
+     *
+     * @param token JWT токен
+     * @return email пользователя
+     */
     public String getUserEmailFromJWT(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(JWT_SECRET_KEY)

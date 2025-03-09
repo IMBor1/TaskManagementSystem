@@ -16,6 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Конфигурация безопасности приложения.
+ * Настраивает Spring Security, JWT аутентификацию и документацию API.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -23,7 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
     info = @Info(
         title = "Task Management System API",
         version = "1.0",
-        description = "API for managing tasks"
+        description = "API для управления задачами"
     )
 )
 @SecurityScheme(
@@ -34,6 +38,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 public class SecurityConfig {
 
+    /**
+     * Конфигурирует цепочку фильтров безопасности.
+     *
+     * @param http конфигурация HTTP безопасности
+     * @param jwtAuthenticationFilter фильтр JWT аутентификации
+     * @return настроенная цепочка фильтров
+     * @throws Exception если возникла ошибка при конфигурации
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         return http
@@ -48,11 +60,23 @@ public class SecurityConfig {
             .build();
     }
 
+    /**
+     * Создает фильтр JWT аутентификации.
+     *
+     * @param jwtTokenProvider провайдер JWT токенов
+     * @param userDetailsService сервис пользовательских данных
+     * @return настроенный фильтр JWT аутентификации
+     */
     @Bean
     public JwtAuthenticationFilter jwtFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService) {
         return new JwtAuthenticationFilter(jwtTokenProvider, userDetailsService);
     }
 
+    /**
+     * Создает кодировщик паролей.
+     *
+     * @return BCrypt кодировщик паролей
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
